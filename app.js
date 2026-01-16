@@ -1,4 +1,3 @@
 function sayHello() {
-    alert("أهلاً بك! JavaScript يعمل ✔️");
-
+  alert("مرحباً! JavaScript يعمل ✅");
 }
