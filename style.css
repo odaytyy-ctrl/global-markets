@@ -27,3 +27,47 @@ button {
   border: none;
   border-radius: 5px;
 }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  text-align: center;
+}
+
+header {
+  padding: 20px;
+  background: #020617;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.card {
+  background: #020617;
+  padding: 20px;
+  width: 150px;
+  border-radius: 10px;
+}
+
+button {
+  padding: 12px 25px;
+  margin: 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* 📱 موبايل */
+@media (max-width: 600px) {
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
