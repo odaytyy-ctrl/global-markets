@@ -3,17 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <title>Global Markets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
+<header>
   <h1>🌍 Global Markets</h1>
+</header>
 
-  <p>سعر الذهب اليوم:</p>
-  <h2 id="goldPrice">--</h2>
+<section class="cards">
+  <div class="card">
+    <h3>Gold</h3>
+    <p id="gold">--</p>
+  </div>
+  <div class="card">
+    <h3>Bitcoin</h3>
+    <p id="btc">--</p>
+  </div>
+  <div class="card">
+    <h3>XRP</h3>
+    <p id="xrp">--</p>
+  </div>
+</section>
 
-  <button onclick="getGoldPrice()">تحديث السعر</button>
+<canvas id="marketChart"></canvas>
 
-  <script src="app.js"></script>
+<button onclick="loadData()">تحديث الأسعار</button>
+
+<script src="app.js"></script>
 </body>
 </html>
