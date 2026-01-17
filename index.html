@@ -135,3 +135,29 @@ loadPrices();
 </body>
 </html>
 
+<script>
+async function fetchPrices() {
+  try {
+    // Bitcoin
+    const btcRes = await fetch("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
+    const btcData = await btcRes.json();
+    document.getElementById("btc").innerText = "USD " + btcData.bpi.USD.rate_float.toFixed(0);
+
+    // XRP
+    const xrpRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=usd");
+    const xrpData = await xrpRes.json();
+    document.getElementById("xrp").innerText = "USD " + xrpData.ripple.usd.toFixed(2);
+
+    // Gold
+    const goldRes = await fetch("https://api.metals.live/v1/spot/gold");
+    const goldData = await goldRes.json();
+    document.getElementById("gold").innerText = "USD " + goldData[0][1].toFixed(0);
+
+  } catch (e) {
+    alert("فشل تحميل الأسعار");
+    console.error(e);
+  }
+}
+
+fetchPrices();
+</script>
