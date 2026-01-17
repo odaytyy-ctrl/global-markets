@@ -1,44 +1,51 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>الأسواق العالمية</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+let chart;
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+async function fetchPrices() {
+  try {
+    // BTC & XRP
+    const cryptoRes = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ripple&vs_currencies=usd"
+    );
+    const cryptoData = await cryptoRes.json();
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    document.getElementById("btc").innerText =
+      "USD " + cryptoData.bitcoin.usd.toLocaleString();
 
-<body>
+    document.getElementById("xrp").innerText =
+      "USD " + cryptoData.ripple.usd.toFixed(2);
 
-<header>
-  <h1>🌍 Global Markets</h1>
-</header>
+    // GOLD
+    const goldRes = await fetch("https://api.metals.live/v1/spot/gold");
+    const goldData = await goldRes.json();
+    const goldPrice = goldData[0][1];
 
-<section class="container">
-  <div class="card">
-    <h3>Gold</h3>
-    <p id="gold">--</p>
-  </div>
+    document.getElementById("gold").innerText =
+      "USD " + goldPrice.toFixed(0);
 
-  <div class="card">
-    <h3>Bitcoin</h3>
-    <p id="btc">--</p>
-  </div>
+    drawChart(cryptoData.bitcoin.usd, cryptoData.ripple.usd, goldPrice);
 
-  <div class="card">
-    <h3>XRP</h3>
-    <p id="xrp">--</p>
-  </div>
-</section>
+  } catch (err) {
+    alert("❌ فشل تحميل الأسعار");
+    console.error(err);
+  }
+}
 
-<canvas id="marketChart"></canvas>
+function drawChart(btc, xrp, gold) {
+  const ctx = document.getElementById("marketChart").getContext("2d");
 
-<button onclick="fetchPrices()">🔄 تحديث الأسعار</button>
+  if (chart) chart.destroy();
 
-<script src="app.js"></script>
-</body>
-</html>
+  chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Bitcoin", "XRP", "Gold"],
+      datasets: [{
+        label: "USD",
+        data: [btc, xrp, gold],
+      }]
+    }
+  });
+}
+
+// تحميل تلقائي
+fetchPrices();
