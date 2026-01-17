@@ -1,51 +1,29 @@
-let chart;
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Global Markets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-async function fetchPrices() {
-  try {
-    // BTC & XRP
-    const cryptoRes = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ripple&vs_currencies=usd"
-    );
-    const cryptoData = await cryptoRes.json();
+  <h1>🌍 Global Markets</h1>
 
-    document.getElementById("btc").innerText =
-      "USD " + cryptoData.bitcoin.usd.toLocaleString();
+  <div class="card">
+    Gold (USD): <span id="gold">تحميل...</span>
+  </div>
 
-    document.getElementById("xrp").innerText =
-      "USD " + cryptoData.ripple.usd.toFixed(2);
+  <div class="card">
+    Bitcoin (USD): <span id="btc">تحميل...</span>
+  </div>
 
-    // GOLD
-    const goldRes = await fetch("https://api.metals.live/v1/spot/gold");
-    const goldData = await goldRes.json();
-    const goldPrice = goldData[0][1];
+  <div class="card">
+    XRP (USD): <span id="xrp">تحميل...</span>
+  </div>
 
-    document.getElementById("gold").innerText =
-      "USD " + goldPrice.toFixed(0);
+  <button onclick="loadPrices()">تحديث الأسعار</button>
 
-    drawChart(cryptoData.bitcoin.usd, cryptoData.ripple.usd, goldPrice);
-
-  } catch (err) {
-    alert("❌ فشل تحميل الأسعار");
-    console.error(err);
-  }
-}
-
-function drawChart(btc, xrp, gold) {
-  const ctx = document.getElementById("marketChart").getContext("2d");
-
-  if (chart) chart.destroy();
-
-  chart = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["Bitcoin", "XRP", "Gold"],
-      datasets: [{
-        label: "USD",
-        data: [btc, xrp, gold],
-      }]
-    }
-  });
-}
-
-// تحميل تلقائي
-fetchPrices();
+  <script src="app.js"></script>
+</body>
+</html>
