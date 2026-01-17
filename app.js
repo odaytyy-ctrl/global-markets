@@ -1,49 +1,51 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
+let chart;
+
+async function fetchPrices() {
+  try {
+    // BTC & XRP
+    const cryptoRes = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ripple&vs_currencies=usd"
+    );
+    const cryptoData = await cryptoRes.json();
+
+    document.getElementById("btc").innerText =
+      "USD " + cryptoData.bitcoin.usd.toLocaleString();
+
+    document.getElementById("xrp").innerText =
+      "USD " + cryptoData.ripple.usd.toFixed(2);
+
+    // GOLD
+    const goldRes = await fetch("https://api.metals.live/v1/spot/gold");
+    const goldData = await goldRes.json();
+    const goldPrice = goldData[0][1];
+
+    document.getElementById("gold").innerText =
+      "USD " + goldPrice.toFixed(0);
+
+    drawChart(cryptoData.bitcoin.usd, cryptoData.ripple.usd, goldPrice);
+
+  } catch (err) {
+    alert("❌ فشل تحميل الأسعار");
+    console.error(err);
+  }
 }
 
-header {
-  padding: 15px;
-  text-align: center;
-  background: #020617;
-  font-size: 22px;
-  font-weight: bold;
+function drawChart(btc, xrp, gold) {
+  const ctx = document.getElementById("marketChart").getContext("2d");
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Bitcoin", "XRP", "Gold"],
+      datasets: [{
+        label: "USD",
+        data: [btc, xrp, gold],
+      }]
+    }
+  });
 }
 
-.container {
-  padding: 20px;
-}
-
-.card {
-  background: #020617;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 18px;
-}
-
-button {
-  display: block;
-  margin: 20px auto;
-  padding: 12px 20px;
-  font-size: 16px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #1d4ed8;
-}
-
-canvas {
-  max-width: 95%;
-  margin: 30px auto;
-  display: block;
-}
+// تحميل تلقائي
+fetchPrices();
