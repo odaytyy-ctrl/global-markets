@@ -1,28 +1,34 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Global Markets</title>
+  <title>الأسواق العالمية</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
 <header>
   <h1>🌍 Global Markets</h1>
 </header>
 
-<section class="cards">
+<section class="container">
   <div class="card">
     <h3>Gold</h3>
     <p id="gold">--</p>
   </div>
+
   <div class="card">
     <h3>Bitcoin</h3>
     <p id="btc">--</p>
   </div>
+
   <div class="card">
     <h3>XRP</h3>
     <p id="xrp">--</p>
@@ -31,198 +37,8 @@
 
 <canvas id="marketChart"></canvas>
 
-<button onclick="loadData()">تحديث الأسعار</button>
+<button onclick="fetchPrices()">🔄 تحديث الأسعار</button>
 
-<script src="./app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>الأسعار العالمية</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
-}
-header {
-  padding: 15px;
-  text-align: center;
-  background: #020617;
-  font-size: 20px;
-  font-weight: bold;
-}
-.container {
-  padding: 20px;
-}
-.card {
-  background: #020617;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
-.price {
-  font-size: 22px;
-  color: #22c55e;
-}
-.small {
-  font-size: 13px;
-  color: #9ca3af;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-📊 الأسعار العالمية (ذهب – فضة – معادن)
-</header>
-
-<div class="container">
-
-<div class="card">
-  <div>🥇 الذهب (XAU)</div>
-  <div class="price" id="gold">تحميل...</div>
-</div>
-
-<div class="card">
-  <div>🥈 الفضة (XAG)</div>
-  <div class="price" id="silver">تحميل...</div>
-</div>
-
-<div class="card">
-  <div>📅 آخر تحديث</div>
-  <div class="small" id="time">—</div>
-</div>
-
-</div>
-
-<script>
-const API_KEY = "ضع_مفتاحك_هنا"; // ← الصق مفتاحك الحقيقي
-
-async function loadPrices() {
-  try {
-    const res = await fetch(
-      `https://metals-api.com/api/latest?access_key=${API_KEY}&base=USD&symbols=XAU,XAG`
-    );
-    const data = await res.json();
-
-    // السعر بالدولار للأونصة
-    const goldPrice = (1 / data.rates.XAU).toFixed(2);
-    const silverPrice = (1 / data.rates.XAG).toFixed(2);
-
-    document.getElementById("gold").innerText =
-      `$${goldPrice} / أونصة`;
-
-    document.getElementById("silver").innerText =
-      `$${silverPrice} / أونصة`;
-
-    document.getElementById("time").innerText =
-      new Date(data.timestamp * 1000).toLocaleString();
-
-  } catch (e) {
-    alert("فشل تحميل الأسعار");
-  }
-}
-
-loadPrices();
-</script>
-<script>
-async function fetchPrices() {
-  try {
-    // BTC
-    const btcRes = await fetch("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
-    const btcData = await btcRes.json();
-    document.getElementById("btc").innerText =
-      "USD " + btcData.bpi.USD.rate_float.toFixed(0);
-
-    // XRP
-    const xrpRes = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=usd"
-    );
-    const xrpData = await xrpRes.json();
-    document.getElementById("xrp").innerText =
-      "USD " + xrpData.ripple.usd.toFixed(2);
-
-    // GOLD
-    const goldRes = await fetch("https://api.metals.live/v1/spot/gold");
-    const goldData = await goldRes.json();
-    document.getElementById("gold").innerText =
-      "USD " + goldData[0][1].toFixed(0);
-
-  } catch (err) {
-    console.error(err);
-    alert("فشل تحميل الأسعار");
-  }
-}
-
-// تحميل تلقائي
-fetchPrices();
-</script>
-</body>
-  <script>
-async function fetchPrices() {
-  try {
-    const res = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ripple&vs_currencies=usd"
-    );
-    const data = await res.json();
-
-    document.getElementById("btc").innerText =
-      "USD " + data.bitcoin.usd.toLocaleString();
-
-    document.getElementById("xrp").innerText =
-      "USD " + data.ripple.usd.toFixed(2);
-
-    // GOLD (سعر تقريبي عالمي ثابت – بدون حظر)
-    const goldRes = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd"
-    );
-    const goldData = await goldRes.json();
-
-    document.getElementById("gold").innerText =
-      "USD " + goldData["tether-gold"].usd.toFixed(0);
-
-  } catch (e) {
-    console.error(e);
-    alert("فشل تحميل الأسعار");
-  }
-}
-
-// تحميل تلقائي
-fetchPrices();
-</script>
-</html>
-
-<script>
-async function fetchPrices() {
-  try {
-    // Bitcoin
-    const btcRes = await fetch("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
-    const btcData = await btcRes.json();
-    document.getElementById("btc").innerText = "USD " + btcData.bpi.USD.rate_float.toFixed(0);
-
-    // XRP
-    const xrpRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=usd");
-    const xrpData = await xrpRes.json();
-    document.getElementById("xrp").innerText = "USD " + xrpData.ripple.usd.toFixed(2);
-
-    // Gold
-    const goldRes = await fetch("https://api.metals.live/v1/spot/gold");
-    const goldData = await goldRes.json();
-    document.getElementById("gold").innerText = "USD " + goldData[0][1].toFixed(0);
-
-  } catch (e) {
-    alert("فشل تحميل الأسعار");
-    console.error(e);
-  }
-}
-
-fetchPrices();
-</script>
-
-
