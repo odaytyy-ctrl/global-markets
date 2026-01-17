@@ -164,6 +164,38 @@ async function fetchPrices() {
 fetchPrices();
 </script>
 </body>
+  <script>
+async function fetchPrices() {
+  try {
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ripple&vs_currencies=usd"
+    );
+    const data = await res.json();
+
+    document.getElementById("btc").innerText =
+      "USD " + data.bitcoin.usd.toLocaleString();
+
+    document.getElementById("xrp").innerText =
+      "USD " + data.ripple.usd.toFixed(2);
+
+    // GOLD (سعر تقريبي عالمي ثابت – بدون حظر)
+    const goldRes = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd"
+    );
+    const goldData = await goldRes.json();
+
+    document.getElementById("gold").innerText =
+      "USD " + goldData["tether-gold"].usd.toFixed(0);
+
+  } catch (e) {
+    console.error(e);
+    alert("فشل تحميل الأسعار");
+  }
+}
+
+// تحميل تلقائي
+fetchPrices();
+</script>
 </html>
 
 <script>
@@ -192,4 +224,5 @@ async function fetchPrices() {
 
 fetchPrices();
 </script>
+
 
