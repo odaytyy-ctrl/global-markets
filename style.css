@@ -1,49 +1,29 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
-}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Global Markets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-header {
-  padding: 15px;
-  text-align: center;
-  background: #020617;
-  font-size: 22px;
-  font-weight: bold;
-}
+  <h1>🌍 Global Markets</h1>
 
-.container {
-  padding: 20px;
-}
+  <div class="card">
+    Gold (USD): <span id="gold">تحميل...</span>
+  </div>
 
-.card {
-  background: #020617;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 18px;
-}
+  <div class="card">
+    Bitcoin (USD): <span id="btc">تحميل...</span>
+  </div>
 
-button {
-  display: block;
-  margin: 20px auto;
-  padding: 12px 20px;
-  font-size: 16px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
+  <div class="card">
+    XRP (USD): <span id="xrp">تحميل...</span>
+  </div>
 
-button:hover {
-  background: #1d4ed8;
-}
+  <button onclick="loadPrices()">تحديث الأسعار</button>
 
-canvas {
-  max-width: 95%;
-  margin: 30px auto;
-  display: block;
-}
+  <script src="app.js"></script>
+</body>
+</html>
