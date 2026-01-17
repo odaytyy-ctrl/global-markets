@@ -1,29 +1,25 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-  <meta charset="UTF-8">
-  <title>Global Markets</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+async function loadPrices() {
+  try {
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ripple,pax-gold&vs_currencies=usd"
+    );
+    const data = await res.json();
 
-  <h1>🌍 Global Markets</h1>
+    document.getElementById("gold").innerText =
+      data["pax-gold"].usd + " $";
 
-  <div class="card">
-    Gold (USD): <span id="gold">تحميل...</span>
-  </div>
+    document.getElementById("btc").innerText =
+      data.bitcoin.usd + " $";
 
-  <div class="card">
-    Bitcoin (USD): <span id="btc">تحميل...</span>
-  </div>
+    document.getElementById("xrp").innerText =
+      data.ripple.usd + " $";
 
-  <div class="card">
-    XRP (USD): <span id="xrp">تحميل...</span>
-  </div>
+  } catch (e) {
+    document.getElementById("gold").innerText = "❌";
+    document.getElementById("btc").innerText = "❌";
+    document.getElementById("xrp").innerText = "❌";
+  }
+}
 
-  <button onclick="loadPrices()">تحديث الأسعار</button>
-
-  <script src="app.js"></script>
-</body>
-</html>
+loadPrices();
+setInterval(loadPrices, 60000);
